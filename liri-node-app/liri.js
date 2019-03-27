@@ -8,23 +8,23 @@ var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 
 //vars to capture user inputs.
-var userOption = process.argv[2]; 
-var inputParameter = process.argv[3];
+var command = process.argv[2]; 
+var argument = process.argv[3];
 
 //Execute function
-UserInputs(userOption, inputParameter);
+UserInputs(command, argument);
 
 //FUNCTIONS
-function UserInputs (userOption, inputParameter){
-    switch (userOption) {
+function UserInputs (command, argument){
+    switch (command) {
     case 'concert-this':
-        showConcertInfo(inputParameter);
+        showConcertInfo(argument);
         break;
     case 'spotify-this-song':
-        showSongInfo(inputParameter);
+        showSongInfo(argument);
         break;
     case 'movie-this':
-        showMovieInfo(inputParameter);
+        showMovieInfo(argument);
         break;
     case 'do-what-it-says':
         showSomeInfo();
@@ -35,8 +35,8 @@ function UserInputs (userOption, inputParameter){
 }
 
 //Funtion for Concert Info: Bands in Town
-function showConcertInfo(inputParameter){
-    var queryUrl = "https://rest.bandsintown.com/artists/" + inputParameter + "/events?app_id=codingbootcamp";
+function showConcertInfo(argument){
+    var queryUrl = "https://rest.bandsintown.com/artists/" + argument + "/events?app_id=codingbootcamp";
     request(queryUrl, function(error, response, body) {
     // If the request is successful
     if (!error && response.statusCode === 200) {
@@ -61,14 +61,14 @@ function showConcertInfo(inputParameter){
 });}
 
 //Function for Music Info: Spotify
-function showSongInfo(inputParameter) {
-    if (inputParameter === undefined) {
-        inputParameter = "The Sign"; //default Song
+function showSongInfo(argument) {
+    if (argument === undefined) {
+        argument = "The Sign"; //default Song
     }
     spotify.search(
         {
             type: "track",
-            query: inputParameter
+            query: argument
         },
         function (err, data) {
             if (err) {
@@ -98,9 +98,9 @@ function showSongInfo(inputParameter) {
 };
 
 //Function for Movie Info: OMDB
-function showMovieInfo(inputParameter){
-    if (inputParameter === undefined) {
-        inputParameter = "Mr. Nobody"
+function showMovieInfo(argument){
+    if (argument === undefined) {
+        argument = "Mr. Nobody"
         console.log("-----------------------");
         fs.appendFileSync("log.txt", "-----------------------\n");
         console.log("If you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/");
@@ -108,7 +108,7 @@ function showMovieInfo(inputParameter){
         console.log("It's on Netflix!");
         fs.appendFileSync("log.txt", "It's on Netflix!\n");
     }
-    var queryUrl = "http://www.omdbapi.com/?t=" + inputParameter + "&y=&plot=short&apikey=b3c0b435";
+    var queryUrl = "http://www.omdbapi.com/?t=" + argument + "&y=&plot=short&apikey=b3c0b435";
     request(queryUrl, function(error, response, body) {
     // If the request is successful
     if (!error && response.statusCode === 200) {
